@@ -481,4 +481,4 @@ let
     in
     (lib.findFirst (a: a != 0) 0 dfs) <= 0;
 in
-version: lib.findFirst (lexLeq version) (throw "unable to match version to an existing driver") existingVersions
+version: lib.findFirst (lexLeq version) (throw "Unable to match version ${version} to an existing driver") existingVersions
