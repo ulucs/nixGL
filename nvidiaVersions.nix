@@ -468,4 +468,4 @@ let
     in
     (lib.findFirst (a: a != 0) 0 dfs) <= 0;
 in
-version: builtins.trace (splitToNums version) (lib.findFirst (lexLeq version) (throw "unable to match version to an existing driver") existingVersions)
+version: lib.findFirst (lexLeq version) (throw "unable to match version to an existing driver") existingVersions
