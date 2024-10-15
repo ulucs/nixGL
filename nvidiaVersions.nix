@@ -1,5 +1,16 @@
 { lib }:
 let
+  # collected from https://download.nvidia.com/XFree86/Linux-x86_64 by running
+  # ```
+  # copy(
+  #   $$('a')
+  #     .map(e => e.innerText)
+  #     .filter(e => e.match(/[0-9]/))
+  #     .map(e => e.substring(0, e.length-1))
+  #     .map(s => `"${s}"`)
+  #     .join("\n")
+  # )
+  # ```
   existingVersions = [
     "71.86.01"
     "71.86.04"
@@ -461,6 +472,8 @@ let
     "560.31.02"
     "560.35.03"
   ];
+  # We match for the leading [1-9] because our nixpkgs dependency doesn't yet have toIntBase10
+  # so version numbers like 06 are interpreted as octals and raise errors
   splitToNums = a: builtins.map lib.toInt (lib.flatten (builtins.filter builtins.isList (builtins.split "([1-9][0-9]+)" a)));
   lexLeq = a: b:
     let
