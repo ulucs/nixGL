@@ -452,6 +452,9 @@ let
     "535.171.04"
     "535.179"
     "535.183.01"
+    "535.216.01"
+    "535.230.02"
+    "535.247.01"
     "545.23.06"
     "545.29.02"
     "545.29.06"
@@ -464,6 +467,11 @@ let
     "550.100"
     "550.107.02"
     "550.120"
+    "550.127.05"
+    "550.135"
+    "550.142"
+    "550.144.03"
+    "550.163.01"
     "555.42.02"
     "555.52.04"
     "555.58"
@@ -471,14 +479,19 @@ let
     "560.28.03"
     "560.31.02"
     "560.35.03"
+    "565.57.01"
+    "565.77"
+    "570.86.16"
+    "570.124.04"
+    "570.133.07"
+    "570.144"
+    "570.153.02"
+    "570.169"
+    "575.51.02"
+    "575.57.08"
+    "575.64"
+    "575.64.03"
   ];
-  # We match for the leading [1-9] because our nixpkgs dependency doesn't yet have toIntBase10
-  # so version numbers like 06 are interpreted as octals and raise errors
-  splitToNums = a: builtins.map lib.toInt (lib.flatten (builtins.filter builtins.isList (builtins.split "([1-9][0-9]+)" a)));
-  lexLeq = a: b:
-    let
-      dfs = lib.lists.zipListsWith (a: b: a - b) (splitToNums a) (splitToNums b);
-    in
-    (lib.findFirst (a: a != 0) 0 dfs) <= 0;
+  lexicalLeq = a: b: 1 != (builtins.compareVersions a b);
 in
-version: lib.findFirst (lexLeq version) (throw "Unable to match version ${version} to an existing driver") existingVersions
+version: lib.findFirst (lexicalLeq version) (throw "Unable to match version ${version} to an existing driver") existingVersions
